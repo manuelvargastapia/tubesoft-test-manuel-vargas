@@ -27,7 +27,7 @@ app.post('/register_time', validator.body(querySchema), async (req, res) => {
     const newTime = await Times.create({
       registeredTime: req.body.registeredTime,
     });
-    return res.status(200).json(newTime);
+    return res.status(201).json(newTime);
   } catch (error) {
     return res.status(500).json(error);
   }
