@@ -4,7 +4,9 @@
 const app = require('./app');
 const { sequelize } = require('./models');
 
-app.listen(3000, async () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, async () => {
   // TODO: replace by `debug`
   console.log('Listening on port 3000');
   await sequelize.authenticate();
