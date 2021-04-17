@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "pretest": "NODE_ENV=test npm run reset-db",
+    "reset-db": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate"
   },
   "author": "Manuel Vargas",
   "license": "ISC",
