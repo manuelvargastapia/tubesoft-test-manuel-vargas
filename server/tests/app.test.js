@@ -1,8 +1,8 @@
 const request = require('supertest');
-const { sequelize, Times } = require('./models');
+const { sequelize, Times } = require('../models');
 const { when } = require('jest-when');
 
-const app = require('./app');
+const app = require('../src/app');
 
 describe('GET /health_check', () => {
   test('It should return OK 200', () => {
@@ -20,12 +20,14 @@ describe('POST /register_time', () => {
 
   test('It should return OK 201 with new item created for valid data', (done) => {
     const newTime = { registeredTime: 90000 };
+
     // Mocks to override unpredictable response data
     const mockedResponse = {
       uuid: 'mock-uuid',
       updatedAt: '2021-04-17T19:06:26.044Z',
       createdAt: '2021-04-17T19:06:26.044Z',
     };
+
     request(app)
       .post('/register_time')
       .send(newTime)
@@ -54,8 +56,9 @@ describe('POST /register_time', () => {
       request(app)
         .post('/register_time')
         .send(invalidData)
-        .then((response) => {
-          expect(response.statusCode).toBe(400);
+        .then((res) => {
+          expect(res.statusCode).toBe(400);
+          expect();
           done();
         });
     }
@@ -75,8 +78,8 @@ describe('POST /register_time', () => {
       request(app)
         .post('/register_time')
         .send(invalidData)
-        .then((response) => {
-          expect(response.statusCode).toBe(400);
+        .then((res) => {
+          expect(res.statusCode).toBe(400);
           done();
         });
     }

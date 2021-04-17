@@ -4,7 +4,7 @@
   "description": "Timekeeper ExpressJS server",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/server.js",
     "test": "jest --coverage",
     "pretest": "NODE_ENV=test npm run reset-db",
     "reset-db": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate"

@@ -1,6 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
-const { Times } = require('./models');
+const { Times } = require('../models');
 const validator = require('express-joi-validation').createValidator();
 
 const querySchema = Joi.object({
