@@ -11,12 +11,14 @@ describe('GET /health_check', () => {
 });
 
 describe('POST /register_time', () => {
+  const spiedCreate = jest.spyOn(Times, 'create');
+
   // Close db conection after running all the tests
   afterAll(() => {
     sequelize.close();
   });
 
-  test('It should return OK 201 with new item created for valid data', () => {
+  test('It should return OK 201 with new item created for valid data', (done) => {
     const newTime = { registeredTime: 90000 };
     // Mocks to override unpredictable response data
     const mockedResponse = {
@@ -24,7 +26,7 @@ describe('POST /register_time', () => {
       updatedAt: '2021-04-17T19:06:26.044Z',
       createdAt: '2021-04-17T19:06:26.044Z',
     };
-    return request(app)
+    request(app)
       .post('/register_time')
       .send(newTime)
       .expect((res) => {
@@ -38,6 +40,11 @@ describe('POST /register_time', () => {
         registeredTime: newTime.registeredTime,
         updatedAt: mockedResponse.updatedAt,
         createdAt: mockedResponse.createdAt,
+      })
+      .then((_) => {
+        expect(spiedCreate.mock.calls.length).toBe(1);
+        expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
+        done();
       });
   });
 
@@ -52,6 +59,7 @@ describe('POST /register_time', () => {
           done();
         });
     }
+    expect(spiedCreate.mock.calls.length).toBe(0);
   });
 
   test('It should return BAD REQUEST 400 when registeredTime is invalid', (done) => {
@@ -72,18 +80,27 @@ describe('POST /register_time', () => {
           done();
         });
     }
+    expect(spiedCreate.mock.calls.length).toBe(0);
   });
 
-  test('It should return 500 INTERNAL SERVER ERROR when resource creation fails', () => {
-    const spiedCreate = jest.spyOn(Times, 'create');
+  test('It should return 500 INTERNAL SERVER ERROR when resource creation fails', (done) => {
+    const newTime = { registeredTime: 5000 };
+    const errorMessage = 'Unexpected Error';
+
     when(spiedCreate)
       .calledWith(expect.anything())
       // All Sequelize error inherits from the base JS Error class
-      .mockRejectedValue(new Error('Unexpected Error'));
+      .mockRejectedValue(new Error(errorMessage));
 
     return request(app)
       .post('/register_time')
-      .send({ registeredTime: 5000 })
-      .expect(500, { error: 'Unexpected Error' });
+      .send(newTime)
+      .then((res) => {
+        expect(res.statusCode).toBe(500);
+        expect(res.body).toStrictEqual({ error: errorMessage });
+        expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
+        expect(spiedCreate.mock.calls.length).toBe(1);
+        done();
+      });
   });
 });
