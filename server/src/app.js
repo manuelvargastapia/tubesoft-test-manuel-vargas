@@ -1,7 +1,9 @@
 const express = require('express');
 const Joi = require('joi');
 const { Times } = require('../models');
-const validator = require('express-joi-validation').createValidator();
+const validator = require('express-joi-validation').createValidator({
+  passError: true,
+});
 
 const querySchema = Joi.object({
   registeredTime: Joi.number().integer().min(0).max(2147483647).required(),
@@ -22,14 +24,31 @@ app.get('/health_check', (_, res) => {
 });
 
 // Endpoint to register the time sended by client in miliseconds
-app.post('/register_time', validator.body(querySchema), async (req, res) => {
-  try {
-    const newTime = await Times.create({
-      registeredTime: req.body.registeredTime,
+app.post(
+  '/register_time',
+  validator.body(querySchema),
+  async (req, res, next) => {
+    try {
+      const newTime = await Times.create({
+        registeredTime: req.body.registeredTime,
+      });
+      return res.status(201).json(newTime);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+app.use((err, _, res, __) => {
+  if (err && err.error && err.error.isJoi) {
+    res.status(400).json({
+      error: `Invalid data in ${err.type}`,
+      message: err.error.toString(),
     });
-    return res.status(201).json(newTime);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+  } else {
+    res
+      .status(500)
+      .json({ error: 'Internal server error', message: err.message });
   }
 });
 
