@@ -1,5 +1,6 @@
 const request = require('supertest');
-const { sequelize } = require('./models');
+const { sequelize, Times } = require('./models');
+const { when } = require('jest-when');
 
 const app = require('./app');
 
@@ -71,5 +72,18 @@ describe('POST /register_time', () => {
           done();
         });
     }
+  });
+
+  test('It should return 500 INTERNAL SERVER ERROR when resource creation fails', () => {
+    const spiedCreate = jest.spyOn(Times, 'create');
+    when(spiedCreate)
+      .calledWith(expect.anything())
+      // All Sequelize error inherits from the base JS Error class
+      .mockRejectedValue(new Error('Unexpected Error'));
+
+    return request(app)
+      .post('/register_time')
+      .send({ registeredTime: 5000 })
+      .expect(500, { error: 'Unexpected Error' });
   });
 });

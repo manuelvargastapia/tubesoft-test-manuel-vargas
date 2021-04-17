@@ -29,7 +29,7 @@ app.post('/register_time', validator.body(querySchema), async (req, res) => {
     });
     return res.status(201).json(newTime);
   } catch (error) {
-    return res.status(500).json(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
