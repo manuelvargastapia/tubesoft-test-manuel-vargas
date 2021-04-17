@@ -1,4 +1,5 @@
 const request = require('supertest');
+const { sequelize } = require('./models');
 
 const app = require('./app');
 
@@ -9,11 +10,34 @@ describe('GET /health_check', () => {
 });
 
 describe('POST /register_time', () => {
-  test('It should return OK 200 for valid data', () => {
+  // Close db conection after running all the tests
+  afterAll(() => {
+    sequelize.close();
+  });
+
+  test('It should return OK 201 with new item created for valid data', () => {
+    const newTime = { registeredTime: 90000 };
+    // Mocks to override unpredictable response data
+    const mockedResponse = {
+      uuid: 'mock-uuid',
+      updatedAt: '2021-04-17T19:06:26.044Z',
+      createdAt: '2021-04-17T19:06:26.044Z',
+    };
     return request(app)
       .post('/register_time')
-      .send({ registeredTime: 90000 })
-      .expect(200);
+      .send(newTime)
+      .expect((res) => {
+        // Override some response elements before evaluating the final response
+        res.body.uuid = mockedResponse.uuid;
+        res.body.updatedAt = mockedResponse.updatedAt;
+        res.body.createdAt = mockedResponse.createdAt;
+      })
+      .expect(201, {
+        uuid: mockedResponse.uuid,
+        registeredTime: newTime.registeredTime,
+        updatedAt: mockedResponse.updatedAt,
+        createdAt: mockedResponse.createdAt,
+      });
   });
 
   test('It should return BAD REQUEST 400 when data is missing', (done) => {
