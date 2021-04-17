@@ -58,7 +58,9 @@ describe('POST /register_time', () => {
         .send(invalidData)
         .then((res) => {
           expect(res.statusCode).toBe(400);
-          expect();
+          expect(res.body).toHaveProperty('error');
+          expect(res.body).toHaveProperty('message');
+          expect(res.body.error).toContain('Invalid data in');
           done();
         });
     }
@@ -80,6 +82,9 @@ describe('POST /register_time', () => {
         .send(invalidData)
         .then((res) => {
           expect(res.statusCode).toBe(400);
+          expect(res.body).toHaveProperty('error');
+          expect(res.body).toHaveProperty('message');
+          expect(res.body.error).toContain('Invalid data in');
           done();
         });
     }
@@ -100,7 +105,10 @@ describe('POST /register_time', () => {
       .send(newTime)
       .then((res) => {
         expect(res.statusCode).toBe(500);
-        expect(res.body).toStrictEqual({ error: errorMessage });
+        expect(res.body).toStrictEqual({
+          error: 'Internal server error',
+          message: errorMessage,
+        });
         expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
         expect(spiedCreate.mock.calls.length).toBe(1);
         done();
