@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 
 const app = express();
 
@@ -7,7 +7,7 @@ const app = express();
 // It can be used to customize some alert system to get noitified when
 // the API is down. Or trigger a restart in the context of container
 // orchestration when the API has become unresponsive.
-app.get("/health_check", (_, res) => {
+app.get('/health_check', (_, res) => {
   res.status(200).send();
 });
 
