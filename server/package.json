@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "pretest": "NODE_ENV=test npm run reset-db",
     "reset-db": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate"
   },
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "jest": "26.6.3",
+    "jest-when": "3.2.1",
     "sequelize-cli": "6.2.0",
     "supertest": "6.1.3"
   }
