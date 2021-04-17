@@ -1,13 +1,13 @@
 const express = require('express');
 const Joi = require('joi');
-
-const app = express();
-
+const { Times } = require('./models');
 const validator = require('express-joi-validation').createValidator();
 
 const querySchema = Joi.object({
   registeredTime: Joi.number().integer().min(0).max(2147483647).required(),
 });
+
+const app = express();
 
 // Parse application/json
 app.use(express.json());
@@ -22,8 +22,15 @@ app.get('/health_check', (_, res) => {
 });
 
 // Endpoint to register the time sended by client in miliseconds
-app.post('/register_time', validator.body(querySchema), (_, res) => {
-  res.status(200).send();
+app.post('/register_time', validator.body(querySchema), async (req, res) => {
+  try {
+    const newTime = await Times.create({
+      registeredTime: req.body.registeredTime,
+    });
+    return res.status(200).json(newTime);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
 });
 
 module.exports = app;
