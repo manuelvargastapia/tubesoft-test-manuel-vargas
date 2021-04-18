@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "author": "Manuel Vargas",
   "license": "ISC",
-  "main": "app.js",
+  "main": "src/server.js",
   "jest": {
     "clearMocks": true,
     "coverageProvider": "v8",

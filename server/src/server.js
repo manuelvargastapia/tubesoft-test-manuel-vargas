@@ -2,7 +2,7 @@
 // we can run the app with `node server.js` and also import
 // app.js for testing
 const app = require('./app');
-const { sequelize } = require('../models');
+const { sequelize } = require('./models');
 
 const PORT = process.env.PORT || 3000;
 
