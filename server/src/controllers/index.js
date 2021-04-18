@@ -1,20 +1,18 @@
-const { Times } = require('../models');
+const { createTime } = require('../services');
 
 const healthCheck = (_, res) => {
   res.status(200).send();
 };
 
 const registerTime = async (req, res, next) => {
-  try {
-    const newTime = await Times.create({
-      registeredTime: req.body.registeredTime,
-    });
-    return res.status(201).json(newTime);
-  } catch (error) {
-    next(error);
-  }
+  const { newTime, error } = await createTime(req.body.registeredTime);
+  if (error) return next(error);
+  return res.status(201).json(newTime);
 };
 
+// Handle errors based on type. When it's a Joi error, treat them as
+// "BAD REQUEST" and append an explanation. Otherwise, send an "INTERNAL"
+// error
 const errorHandler = (err, _, res, __) => {
   if (err && err.error && err.error.isJoi) {
     res.status(400).json({
