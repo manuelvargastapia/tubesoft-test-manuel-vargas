@@ -43,9 +43,13 @@ describe('POST /register_time', () => {
         updatedAt: mockedResponse.updatedAt,
         createdAt: mockedResponse.createdAt,
       })
-      .then((_) => {
+      .then(async (_) => {
         expect(spiedCreate.mock.calls.length).toBe(1);
         expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
+        const storedTime = await Times.findOne({
+          where: { registeredTime: 90000 },
+        });
+        expect(storedTime.registeredTime).toBe(90000);
         done();
       });
   });
