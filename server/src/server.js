@@ -1,14 +1,23 @@
 // We separate the app from the server for testing purposes:
-// we can run the app with `node server.js` and also import
-// app.js for testing
+// we can run the app with `node src/server.js` and also import
+// app.js for integration testing
 const app = require('./app');
 const { sequelize } = require('./models');
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.listen(PORT, async () => {
-  // TODO: replace by `debug`
-  console.log('Listening on port 3000');
-  await sequelize.authenticate();
-  console.log('Connected to Postgres!');
-});
+const server = app.listen(port);
+console.log(`Listening on port ${port}`);
+
+// Check database connection status
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connected to database');
+  })
+  .catch((error) => {
+    console.log("Couldn't connect to database:", error.message);
+    server.close(() => {
+      console.log('Server closed');
+    });
+  });
