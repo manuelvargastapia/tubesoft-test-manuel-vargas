@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { sequelize, Times } = require('../models');
+const { sequelize, Times } = require('../src/models');
 const { when } = require('jest-when');
 
 const app = require('../src/app');
