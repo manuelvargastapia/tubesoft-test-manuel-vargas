@@ -2,8 +2,8 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Times extends Model {
-    // Override `toJSON()` to hide `id` field, as we don't need
-    // or want to expose it
+    // Override `toJSON()` to hide `id` field, as we don't need it
+    // nor want to expose it
     toJSON() {
       return { ...this.get(), id: undefined };
     }
