@@ -6,10 +6,12 @@ const validator = require('express-joi-validation').createValidator({
   passError: true,
 });
 
-// Define a schema to accept any integer number between 0 and 2147483647
-// (tha maximum integer value accepted by database)
+// Define a schema to accept milliseconds or seconds as any integer
+// number between 0 and 2147483647 (the maximum integer value accepted
+// by the database). Also, it makes the fields mutually exclusive.
 const bodySchema = Joi.object({
-  registeredTime: Joi.number().integer().min(0).max(2147483647).required(),
-});
+  milliseconds: Joi.number().integer().min(0).max(2147483647),
+  seconds: Joi.number().integer().min(0).max(2147483647),
+}).xor('milliseconds', 'seconds');
 
 module.exports = { registerTimeBody: validator.body(bodySchema) };
