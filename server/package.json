@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "node src/server.js",
-    "test": "jest --coverage",
+    "test": "jest --coverage --verbose",
     "pretest": "NODE_ENV=test npm run reset-db",
     "reset-db": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate"
   },
