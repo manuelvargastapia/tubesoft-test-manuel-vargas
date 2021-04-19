@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         // Custom validator to ensure throwing an error if, even after
         // previous validations, still some invalid data are tried to
         // be stored
+        // TODO: unit test
         onlyOneOfTheFields() {
           if (this.milliseconds && this.seconds) {
             throw new Error(
