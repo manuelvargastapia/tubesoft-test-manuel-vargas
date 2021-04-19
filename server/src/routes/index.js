@@ -1,7 +1,7 @@
 exports.createRoutes = (app) => {
   const express = require('express');
-  const { healthCheck, registerTime, errorHandler } = require('../controllers');
-  const { registerTimeBody } = require('../validation');
+  const { healthCheck, registerTime } = require('../controllers');
+  const { registerTimeBodyValidator, errorHandler } = require('../middlewares');
 
   app.use(express.json());
 
@@ -13,7 +13,7 @@ exports.createRoutes = (app) => {
   app.get('/health_check', healthCheck);
 
   // Endpoint to register the time sended by client in miliseconds
-  app.post('/register_time', registerTimeBody, registerTime);
+  app.post('/register_time', registerTimeBodyValidator, registerTime);
 
   app.use(errorHandler);
 };

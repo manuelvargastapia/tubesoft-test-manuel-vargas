@@ -14,4 +14,4 @@ const bodySchema = Joi.object({
   seconds: Joi.number().integer().min(0).max(2147483647),
 }).xor('milliseconds', 'seconds');
 
-module.exports = { registerTimeBody: validator.body(bodySchema) };
+module.exports = validator.body(bodySchema);
