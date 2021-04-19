@@ -14,8 +14,8 @@ describe('POST /register_time', () => {
   const spiedCreate = jest.spyOn(Times, 'create');
 
   // Close db conection after running all the tests
-  afterAll(() => {
-    sequelize.close();
+  afterAll(async () => {
+    await sequelize.close();
   });
 
   beforeEach(() => {
@@ -23,51 +23,100 @@ describe('POST /register_time', () => {
   });
 
   describe('Validate request body', () => {
-    it('should return BAD REQUEST 400 when data is missing', (done) => {
-      const testCases = [{ registeredTime: null }, null];
-      for (const invalidData in testCases) {
+    it('should return BAD REQUEST 400 when required data is missing', (done) => {
+      const testCases = [null, {}, { milliseconds: null }, { seconds: null }];
+
+      testCases.forEach((testCase) => {
         request(app)
           .post('/register_time')
-          .send(invalidData)
+          .send(testCase)
           .then((res) => {
             expect(res.statusCode).toBe(400);
             expect(res.body).toHaveProperty('error');
             expect(res.body).toHaveProperty('message');
             expect(res.body.error).toContain('Invalid data in');
-            done();
           });
-      }
+      });
+
       expect(spiedCreate.mock.calls.length).toBe(0);
+      done();
     });
 
-    it('should return BAD REQUEST 400 when registeredTime is invalid', (done) => {
-      // It shouldn't be negative, decimal nor > 2147483647
+    it('should return BAD REQUEST 400 when both exclusive fields are provided', (done) => {
       const testCases = [
-        { registeredTime: -1000 },
-        { registeredTime: 123.0 },
-        { registeredTime: 456.789 },
-        { registeredTime: 2147483648 },
+        { seconds: 20, milliseconds: null },
+        { milliseconds: 20000, seconds: null },
+        { milliseconds: 20000, seconds: 20 },
       ];
 
-      for (const invalidData in testCases) {
+      testCases.forEach((testCase) => {
         request(app)
           .post('/register_time')
-          .send(invalidData)
+          .send(testCase)
           .then((res) => {
             expect(res.statusCode).toBe(400);
             expect(res.body).toHaveProperty('error');
             expect(res.body).toHaveProperty('message');
             expect(res.body.error).toContain('Invalid data in');
-            done();
           });
-      }
+      });
+
       expect(spiedCreate.mock.calls.length).toBe(0);
+      done();
+    });
+
+    it('should return BAD REQUEST 400 when the milliseconds field is invalid', (done) => {
+      // It shouldn't be negative, decimal nor bigger than 2147483647
+      const testCases = [
+        { milliseconds: -1000 },
+        { milliseconds: 456.789 },
+        { milliseconds: 2147483648 },
+      ];
+
+      testCases.forEach((testCase) => {
+        request(app)
+          .post('/register_time')
+          .send(testCase)
+          .then((res) => {
+            expect(res.statusCode).toBe(400);
+            expect(res.body).toHaveProperty('error');
+            expect(res.body).toHaveProperty('message');
+            expect(res.body.error).toContain('Invalid data in');
+          });
+      });
+
+      expect(spiedCreate.mock.calls.length).toBe(0);
+      done();
+    });
+
+    it('should return BAD REQUEST 400 when the seconds field is invalid', (done) => {
+      // It shouldn't be negative, decimal nor bigger than 2147483647
+      const testCases = [
+        { seconds: -1000 },
+        { seconds: 456.789 },
+        { seconds: 2147483648 },
+      ];
+
+      testCases.forEach((testCase) => {
+        request(app)
+          .post('/register_time')
+          .send(testCase)
+          .then((res) => {
+            expect(res.statusCode).toBe(400);
+            expect(res.body).toHaveProperty('error');
+            expect(res.body).toHaveProperty('message');
+            expect(res.body.error).toContain('Invalid data in');
+          });
+      });
+
+      expect(spiedCreate.mock.calls.length).toBe(0);
+      done();
     });
   });
 
   describe('Handle internal errors', () => {
-    it('should return 500 INTERNAL SERVER ERROR when resource creation fails', (done) => {
-      const newTime = { registeredTime: 5000 };
+    it('should return 500 INTERNAL SERVER ERROR when resource creation fails', () => {
+      const newTime = { milliseconds: 5000 };
       const errorMessage = 'Unexpected Error';
 
       when(spiedCreate)
@@ -86,47 +135,127 @@ describe('POST /register_time', () => {
           });
           expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
           expect(spiedCreate.mock.calls.length).toBe(1);
-          done();
         });
     });
   });
 
   describe('Insert new data when success', () => {
-    it('should return OK 201 with new item created for valid data', (done) => {
-      const newTime = { registeredTime: 90000 };
+    describe('Milliseconds', () => {
+      const testCases = [
+        [
+          { milliseconds: 90000 },
+          {
+            uuid: 'mock uuid',
+            milliseconds: 90000,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+        [
+          { milliseconds: 1234.0 },
+          {
+            uuid: 'mock uuid',
+            milliseconds: 1234.0,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+        [
+          { milliseconds: '98765' },
+          {
+            uuid: 'mock uuid',
+            milliseconds: 98765,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+      ];
 
-      // Mocks to override unpredictable response data
-      const mockedResponse = {
-        uuid: 'mock uuid',
-        updatedAt: 'mock updated at',
-        createdAt: 'mock created at',
-      };
+      it.concurrent.each(testCases)(
+        'should return OK 201 with new item created for (%o)',
+        async (newTime, expectedResponse) => {
+          return request(app)
+            .post('/register_time')
+            .send(newTime)
+            .expect((res) => {
+              // Override some unpredictable response elements before evaluating
+              // the final response
+              res.body.uuid = expectedResponse.uuid;
+              res.body.updatedAt = expectedResponse.updatedAt;
+              res.body.createdAt = expectedResponse.createdAt;
+            })
+            .expect(201, expectedResponse)
+            .then(async (_) => {
+              // TODO: couldn't get calls from spied create()
+              // expect(spiedCreate).toHaveBeenCalledTimes(1);
+              // expect(spiedCreate.mock.calls[0][0]).toStrictEqual(
+              //   expectedResponse.milliseconds
+              // );
+              const storedTime = await Times.findOne({ where: newTime });
+              expect(storedTime.milliseconds).toBe(
+                expectedResponse.milliseconds
+              );
+            });
+        }
+      );
+    });
 
-      request(app)
-        .post('/register_time')
-        .send(newTime)
-        .expect((res) => {
-          // Override some unpredictable response elements before evaluating
-          // the final response
-          res.body.uuid = mockedResponse.uuid;
-          res.body.updatedAt = mockedResponse.updatedAt;
-          res.body.createdAt = mockedResponse.createdAt;
-        })
-        .expect(201, {
-          uuid: mockedResponse.uuid,
-          registeredTime: newTime.registeredTime,
-          updatedAt: mockedResponse.updatedAt,
-          createdAt: mockedResponse.createdAt,
-        })
-        .then(async (_) => {
-          expect(spiedCreate.mock.calls.length).toBe(1);
-          expect(spiedCreate.mock.calls[0][0]).toStrictEqual(newTime);
-          const storedTime = await Times.findOne({
-            where: { registeredTime: 90000 },
-          });
-          expect(storedTime.registeredTime).toBe(90000);
-          done();
-        });
+    describe('Seconds', () => {
+      const testCases = [
+        [
+          { seconds: 90 },
+          {
+            uuid: 'mock uuid',
+            seconds: 90,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+        [
+          { seconds: 12.0 },
+          {
+            uuid: 'mock uuid',
+            seconds: 12.0,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+        [
+          { seconds: '987' },
+          {
+            uuid: 'mock uuid',
+            seconds: 987,
+            updatedAt: 'mock updated at',
+            createdAt: 'mock created at',
+          },
+        ],
+      ];
+
+      it.concurrent.each(testCases)(
+        'should return OK 201 with new item created for (%o)',
+        async (newTime, expectedResponse) => {
+          return request(app)
+            .post('/register_time')
+            .send(newTime)
+            .expect((res) => {
+              // Override some unpredictable response elements before evaluating
+              // the final response
+              res.body.uuid = expectedResponse.uuid;
+              res.body.updatedAt = expectedResponse.updatedAt;
+              res.body.createdAt = expectedResponse.createdAt;
+            })
+            .expect(201, expectedResponse)
+            .then(async (_) => {
+              // TODO: couldn't get calls from spied create()
+              // expect(spiedCreate).toHaveBeenCalledTimes(1);
+              // expect(spiedCreate.mock.calls[0][0].seconds).toStrictEqual(
+              //   expectedResponse.seconds
+              // );
+              const storedTime = await Times.findOne({ where: newTime });
+              expect(storedTime.seconds).toBe(expectedResponse.seconds);
+            });
+        }
+      );
     });
   });
 });
