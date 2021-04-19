@@ -13,7 +13,8 @@
     "database": "timekeeper_db_test",
     "host": "localhost",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "username": null,
