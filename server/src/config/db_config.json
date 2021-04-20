@@ -15,12 +15,5 @@
     "port": 5432,
     "dialect": "postgres",
     "logging": false
-  },
-  "production": {
-    "username": null,
-    "password": null,
-    "database": null,
-    "host": null,
-    "dialect": "postgres"
   }
 }
