@@ -1,3 +1,5 @@
+'use strict';
+
 // We separate the app from the server for testing purposes:
 // we can run the app with `node src/server.js` and also import
 // app.js for integration testing

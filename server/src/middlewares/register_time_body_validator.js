@@ -1,3 +1,5 @@
+'use strict';
+
 // We use Joi to validate the requests before handling them.
 // Any error is forwarded to the `errorHandler` controller.
 

@@ -1,3 +1,5 @@
+'use strict';
+
 exports.createRoutes = (app) => {
   const express = require('express');
   const { healthCheck, registerTime } = require('../controllers');

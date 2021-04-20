@@ -1,3 +1,5 @@
+'use strict';
+
 const { createTime } = require('../services');
 
 module.exports = async (req, res, next) => {

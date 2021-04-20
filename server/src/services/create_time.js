@@ -1,3 +1,5 @@
+'use strict';
+
 const { Times } = require('../models');
 
 module.exports = async (registeredTime) => {
