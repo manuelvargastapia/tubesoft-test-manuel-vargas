@@ -3,8 +3,7 @@
 // app.js for integration testing
 const app = require('./app');
 const { sequelize } = require('./models');
-
-const port = process.env.PORT || 3000;
+const { port } = require('./config/app_config.json');
 
 const server = app.listen(port);
 console.log(`Listening on port ${port}`);
