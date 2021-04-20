@@ -8,11 +8,17 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/db_config.json')[env];
 const db = {};
 
+// Use env vars when building with Docker and config.json when
+// building locally
 let sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
+  process.env.DB_NAME || config.database,
+  process.env.DB_USER || config.username,
+  process.env.DB_PASSWORD || config.password,
+  {
+    host: process.env.DB_HOST || config.host,
+    port: process.env.DB_PORT || config.port,
+    dialect: process.env.DB_DIALECT || config.dialect,
+  }
 );
 
 fs.readdirSync(__dirname)

@@ -7,7 +7,9 @@ const app = require('./app');
 const { sequelize } = require('./models');
 const { port } = require('./config/app_config.json');
 
-const server = app.listen(port);
+// Use env vars when building with Docker and config.json when
+// building locally
+const server = app.listen(process.env.PORT || port);
 console.log(`Listening on port ${port}`);
 
 // Check database connection status
