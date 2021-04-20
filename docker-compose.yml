@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: timekeeper_db
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    healthcheck: # Don't run the server container until being in a healthy state
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build: ./server # Build image from Dockefile in /server
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: postgres
+      DB_NAME: timekeeper_db
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_PORT: 5432
+      DB_DIALECT: postgres
+    depends_on: # Wait for DB being in a healthy state
+      postgres:
+        condition: service_healthy
