@@ -5,19 +5,18 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/db_config.json')[env];
+const config = require(__dirname + '/../config/db_config.js')[env];
 const db = {};
 
-// Use env vars when building with Docker and config.json when
-// building locally
 let sequelize = new Sequelize(
-  process.env.DB_NAME || config.database,
-  process.env.DB_USER || config.username,
-  process.env.DB_PASSWORD || config.password,
+  config.database,
+  config.username,
+  config.password,
   {
-    host: process.env.DB_HOST || config.host,
-    port: process.env.DB_PORT || config.port,
-    dialect: process.env.DB_DIALECT || config.dialect,
+    host: config.host,
+    port: config.port,
+    dialect: config.dialect,
+    logging: false,
   }
 );
 
