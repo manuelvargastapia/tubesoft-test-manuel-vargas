@@ -1,21 +1,20 @@
 {
   "name": "server",
-  "description": "Timekeeper ExpressJS server",
+  "description": "Timekeeper server",
   "version": "1.0.0",
   "author": "Manuel Vargas",
   "license": "ISC",
   "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "docker-test": "chmod +x ./scripts/docker-test.sh && ./scripts/docker-test.sh",
+    "local-test": "chmod +x ./scripts/local-test.sh && ./scripts/local-test.sh"
+  },
   "jest": {
     "clearMocks": true,
     "coverageProvider": "v8",
     "testEnvironment": "node",
     "coverageDirectory": "tests/coverage"
-  },
-  "scripts": {
-    "start": "node src/server.js",
-    "test": "jest --coverage --verbose",
-    "pretest": "NODE_ENV=test npm run reset-db",
-    "reset-db": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate"
   },
   "dependencies": {
     "express": "4.17.1",
