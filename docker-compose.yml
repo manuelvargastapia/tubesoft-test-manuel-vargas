@@ -32,7 +32,7 @@ services:
     depends_on: # Wait for DB being in a healthy state
       postgres:
         condition: service_healthy
-    healthcheck:
+    healthcheck: # Don't run the client container until being in a healthy state
       test: ['CMD-SHELL', 'curl --fail http://localhost:3000/health_check']
       interval: 5s
       timeout: 3s
