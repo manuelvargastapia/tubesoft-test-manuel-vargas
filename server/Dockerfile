@@ -18,8 +18,8 @@ RUN npm install joi
 COPY . .
 
 # Give execution permissions to entrypoint.sh
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./scripts/entrypoint.sh
 
 EXPOSE 3000
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]
