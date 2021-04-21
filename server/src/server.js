@@ -9,7 +9,7 @@ const { port } = require('./config/app_config.json');
 
 // Use env vars when building with Docker and config.json when
 // building locally
-const server = app.listen(process.env.PORT || port);
+const server = app.listen(port);
 console.log(`Listening on port ${port}`);
 
 // Check database connection status
