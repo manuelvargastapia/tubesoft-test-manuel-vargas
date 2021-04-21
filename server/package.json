@@ -3,7 +3,6 @@
   "description": "Timekeeper server",
   "version": "1.0.0",
   "author": "Manuel Vargas",
-  "license": "ISC",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
