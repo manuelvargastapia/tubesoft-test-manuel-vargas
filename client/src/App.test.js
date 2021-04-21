@@ -1,8 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('App', () => {
+  it('renders header messages', () => {
+    render(<App />);
+
+    expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Start, pause and then finish your stopwatch to record your time.'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('renders Stopwatch', () => {
+    render(<App />);
+    expect(screen.getByTestId('stop-watch')).toBeInTheDocument();
+  });
 });
