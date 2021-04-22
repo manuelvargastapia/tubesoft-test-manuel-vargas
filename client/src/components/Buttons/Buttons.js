@@ -1,44 +1,23 @@
-import { useState } from 'react';
-
-function Buttons() {
-  const [status, setStatus] = useState({
-    isRunning: false,
-    isPaused: false,
-    isStoped: true,
-  });
-
-  const handleStart = () => {
-    setStatus({ isRunning: true, isPaused: false, isStoped: false });
-  };
-  const handlePause = () => {
-    setStatus({ isRunning: false, isPaused: true, isStoped: false });
-  };
-  const handleResume = () => {
-    setStatus({ isRunning: true, isPaused: false, isStoped: false });
-  };
-  const handleFinish = () => {
-    setStatus({ isRunning: false, isPaused: false, isStoped: true });
-  };
-
-  const finishButton = <button onClick={handleFinish}>Finish</button>;
+function Buttons({ status, onStart, onPause, onResume, onFinish }) {
+  const finishButton = <button onClick={onFinish}>Finish</button>;
 
   return (
     <div data-testid="buttons">
       {status.isRunning && (
         <div>
-          <button onClick={handlePause}>Pause</button>
+          <button onClick={onPause}>Pause</button>
           {finishButton}
         </div>
       )}
-      {status.isStoped && (
+      {status.isStopped && (
         <div>
-          <button onClick={handleStart}>Start</button>
+          <button onClick={onStart}>Start</button>
           {finishButton}
         </div>
       )}
       {status.isPaused && (
         <div>
-          <button onClick={handleResume}>Resume</button>
+          <button onClick={onResume}>Resume</button>
           {finishButton}
         </div>
       )}
