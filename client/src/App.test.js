@@ -15,6 +15,6 @@ describe('App', () => {
 
   it('renders Stopwatch', () => {
     render(<App />);
-    expect(screen.getByTestId('stop-watch')).toBeInTheDocument();
+    expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
   });
 });
