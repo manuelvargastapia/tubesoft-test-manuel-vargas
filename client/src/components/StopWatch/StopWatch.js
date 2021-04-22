@@ -43,7 +43,7 @@ function StopWatch() {
 
     // Clean up the interval after each render to prevent setTime()
     // being called even after pausing or reseting the timer
-    // return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, [status]);
 
   return (
