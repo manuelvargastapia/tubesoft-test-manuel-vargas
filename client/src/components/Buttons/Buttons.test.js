@@ -1,76 +1,66 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Buttons from './Buttons';
 
 describe('Buttons', () => {
-  it('renders initial setup', () => {
-    render(<Buttons />);
+  const mockedHandleStart = jest.fn();
+  const mockedHandlePause = jest.fn();
+  const mockedHandleResume = jest.fn();
+  const mockedHandleFinish = jest.fn();
 
-    expect(screen.getByText('Start')).toBeInTheDocument();
-    expect(screen.getByText('Finish')).toBeInTheDocument();
-    expect(screen.queryByText('Pause')).toBeNull();
-    expect(screen.queryByText('Resume')).toBeNull();
-  });
+  it('renders corresponding button when running', () => {
+    const mockedStatus = { isRunning: true, isPaused: false, isStopped: false };
 
-  it('changes Start button title to Pause when starting', () => {
-    render(<Buttons />);
+    render(
+      <Buttons
+        status={mockedStatus}
+        onStart={mockedHandleStart}
+        onPause={mockedHandlePause}
+        onResume={mockedHandleResume}
+        onFinish={mockedHandleFinish}
+      />
+    );
 
-    const startButton = screen.queryByText('Start');
-
-    expect(startButton).toBeInTheDocument();
-    expect(screen.queryByText('Pause')).toBeNull();
-
-    fireEvent.click(startButton);
-
-    expect(screen.queryByText('Pause')).toBeInTheDocument();
     expect(screen.queryByText('Start')).toBeNull();
+    expect(screen.queryByText('Finish')).toBeInTheDocument();
+    expect(screen.queryByText('Pause')).toBeInTheDocument();
+    expect(screen.queryByText('Resume')).toBeNull();
   });
 
-  it('changes Pause button title to Resume when paused', () => {
-    render(<Buttons />);
+  it('renders corresponding buttons when paused', () => {
+    const mockedStatus = { isRunning: false, isPaused: true, isStopped: false };
 
-    fireEvent.click(screen.queryByText('Start'));
+    render(
+      <Buttons
+        status={mockedStatus}
+        onStart={mockedHandleStart}
+        onPause={mockedHandlePause}
+        onResume={mockedHandleResume}
+        onFinish={mockedHandleFinish}
+      />
+    );
 
-    const pauseButton = screen.queryByText('Pause');
-
-    expect(pauseButton).toBeInTheDocument();
-    expect(screen.queryByText('Resume')).toBeNull();
-
-    fireEvent.click(pauseButton);
-
+    expect(screen.queryByText('Start')).toBeNull();
+    expect(screen.queryByText('Finish')).toBeInTheDocument();
+    expect(screen.queryByText('Pause')).toBeNull();
     expect(screen.queryByText('Resume')).toBeInTheDocument();
-    expect(screen.queryByText('Pause')).toBeNull();
   });
 
-  it('changes Resume button title to Paused when resumed', () => {
-    render(<Buttons />);
+  it('renders corresponding buttons when finished', () => {
+    const mockedStatus = { isRunning: false, isPaused: false, isStopped: true };
 
-    fireEvent.click(screen.queryByText('Start'));
-    fireEvent.click(screen.queryByText('Pause'));
-
-    const resumeButton = screen.queryByText('Resume');
-
-    expect(resumeButton).toBeInTheDocument();
-    expect(screen.queryByText('Pause')).toBeNull();
-
-    fireEvent.click(resumeButton);
-
-    expect(screen.queryByText('Pause')).toBeInTheDocument();
-    expect(screen.queryByText('Resume')).toBeNull();
-  });
-
-  it('changes Pause button title to Start when finished', () => {
-    render(<Buttons />);
-
-    fireEvent.click(screen.queryByText('Start'));
-
-    const pauseButton = screen.queryByText('Pause');
-
-    expect(pauseButton).toBeInTheDocument();
-    expect(screen.queryByText('Start')).toBeNull();
-
-    fireEvent.click(screen.queryByText('Finish'));
+    render(
+      <Buttons
+        status={mockedStatus}
+        onStart={mockedHandleStart}
+        onPause={mockedHandlePause}
+        onResume={mockedHandleResume}
+        onFinish={mockedHandleFinish}
+      />
+    );
 
     expect(screen.queryByText('Start')).toBeInTheDocument();
+    expect(screen.queryByText('Finish')).toBeInTheDocument();
     expect(screen.queryByText('Pause')).toBeNull();
+    expect(screen.queryByText('Resume')).toBeNull();
   });
 });
