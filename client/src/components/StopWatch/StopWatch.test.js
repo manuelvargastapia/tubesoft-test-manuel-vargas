@@ -1,10 +1,17 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  act,
+  configure,
+} from '@testing-library/react';
 import StopWatch from './StopWatch';
 
 describe('Stopwatch', () => {
   // Mock and reset setInterval() between tests
   beforeEach(() => {
     jest.useFakeTimers();
+    configure({ throwSuggestions: true });
   });
 
   it('renders initial setup', () => {
@@ -19,7 +26,7 @@ describe('Stopwatch', () => {
 
     expect(setInterval).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('Start'));
+    fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
     expect(setInterval).toHaveBeenCalledTimes(1);
 
@@ -37,7 +44,7 @@ describe('Stopwatch', () => {
 
     expect(setInterval).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('Start'));
+    fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
     expect(setInterval).toHaveBeenCalledTimes(1);
 
@@ -47,7 +54,7 @@ describe('Stopwatch', () => {
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:10:00');
 
-    fireEvent.click(screen.getByText('Finish'));
+    fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:00:00');
 
@@ -63,7 +70,7 @@ describe('Stopwatch', () => {
 
     expect(setInterval).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('Start'));
+    fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
     expect(setInterval).toHaveBeenCalledTimes(1);
 
@@ -73,7 +80,7 @@ describe('Stopwatch', () => {
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:10:00');
 
-    fireEvent.click(screen.getByText('Pause'));
+    fireEvent.click(screen.getByRole('button', { name: /pause/i }));
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:10:00');
 
@@ -89,13 +96,13 @@ describe('Stopwatch', () => {
 
     expect(setInterval).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('Start'));
+    fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
     act(() => {
       jest.advanceTimersByTime(10000);
     });
 
-    fireEvent.click(screen.getByText('Pause'));
+    fireEvent.click(screen.getByRole('button', { name: /pause/i }));
 
     act(() => {
       jest.advanceTimersByTime(10000);
@@ -103,7 +110,7 @@ describe('Stopwatch', () => {
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:10:00');
 
-    fireEvent.click(screen.getByText('Resume'));
+    fireEvent.click(screen.getByRole('button', { name: /resume/i }));
 
     act(() => {
       jest.advanceTimersByTime(10000);

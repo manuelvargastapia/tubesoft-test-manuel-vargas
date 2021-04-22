@@ -1,7 +1,11 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, configure } from '@testing-library/react';
 import Buttons from './Buttons';
 
 describe('Buttons', () => {
+  beforeEach(() => {
+    configure({ throwSuggestions: true });
+  });
+
   const runningStatus = { isRunning: true, isPaused: false, isStopped: false };
   const pausedStatus = { isRunning: false, isPaused: true, isStopped: false };
   const stoppedStatus = { isRunning: false, isPaused: false, isStopped: true };
@@ -26,28 +30,40 @@ describe('Buttons', () => {
     it('renders corresponding button when running', () => {
       renderWrapper(runningStatus);
 
-      expect(screen.queryByText('Start')).toBeNull();
-      expect(screen.queryByText('Finish')).toBeInTheDocument();
-      expect(screen.queryByText('Pause')).toBeInTheDocument();
-      expect(screen.queryByText('Resume')).toBeNull();
+      expect(screen.queryByRole('button', { name: /start/i })).toBeNull();
+      expect(
+        screen.queryByRole('button', { name: /finish/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: /pause/i })
+      ).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /resume/i })).toBeNull();
     });
 
     it('renders corresponding buttons when paused', () => {
       renderWrapper(pausedStatus);
 
-      expect(screen.queryByText('Start')).toBeNull();
-      expect(screen.queryByText('Finish')).toBeInTheDocument();
-      expect(screen.queryByText('Pause')).toBeNull();
-      expect(screen.queryByText('Resume')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /start/i })).toBeNull();
+      expect(
+        screen.queryByRole('button', { name: /finish/i })
+      ).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /pause/i })).toBeNull();
+      expect(
+        screen.queryByRole('button', { name: /resume/i })
+      ).toBeInTheDocument();
     });
 
     it('renders corresponding buttons when finished', () => {
       renderWrapper(stoppedStatus);
 
-      expect(screen.queryByText('Start')).toBeInTheDocument();
-      expect(screen.queryByText('Finish')).toBeInTheDocument();
-      expect(screen.queryByText('Pause')).toBeNull();
-      expect(screen.queryByText('Resume')).toBeNull();
+      expect(
+        screen.queryByRole('button', { name: /start/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: /finish/i })
+      ).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /pause/i })).toBeNull();
+      expect(screen.queryByRole('button', { name: /resume/i })).toBeNull();
     });
   });
 
@@ -55,7 +71,7 @@ describe('Buttons', () => {
     it('calls Start handler', () => {
       renderWrapper(stoppedStatus);
 
-      fireEvent.click(screen.getByText('Start'));
+      fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
       expect(mockedHandleStart).toHaveBeenCalledTimes(1);
     });
@@ -63,7 +79,7 @@ describe('Buttons', () => {
     it('calls Pause handler', () => {
       renderWrapper(runningStatus);
 
-      fireEvent.click(screen.getByText('Pause'));
+      fireEvent.click(screen.getByRole('button', { name: /pause/i }));
 
       expect(mockedHandlePause).toHaveBeenCalledTimes(1);
     });
@@ -71,7 +87,7 @@ describe('Buttons', () => {
     it('calls Resume handler', () => {
       renderWrapper(pausedStatus);
 
-      fireEvent.click(screen.getByText('Resume'));
+      fireEvent.click(screen.getByRole('button', { name: /resume/i }));
 
       expect(mockedHandleResume).toHaveBeenCalledTimes(1);
     });
@@ -79,7 +95,7 @@ describe('Buttons', () => {
     it('calls Finish handler when running', () => {
       renderWrapper(runningStatus);
 
-      fireEvent.click(screen.getByText('Finish'));
+      fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
       expect(mockedHandleFinish).toHaveBeenCalledTimes(1);
     });
@@ -87,7 +103,7 @@ describe('Buttons', () => {
     it('calls Finish handler when paused', () => {
       renderWrapper(pausedStatus);
 
-      fireEvent.click(screen.getByText('Finish'));
+      fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
       expect(mockedHandleFinish).toHaveBeenCalledTimes(1);
     });
@@ -95,7 +111,7 @@ describe('Buttons', () => {
     it('does not call Finish handler when stopped', () => {
       renderWrapper(stoppedStatus);
 
-      fireEvent.click(screen.getByText('Finish'));
+      fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
       expect(mockedHandleFinish).not.toHaveBeenCalled();
     });
