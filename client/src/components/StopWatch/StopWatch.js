@@ -24,9 +24,12 @@ function StopWatch() {
   };
 
   useEffect(() => {
-    let interval = null;
+    let interval;
 
     if (status.isRunning) {
+      // Increment the timer every 10 milliseconds to show only the
+      // hundredths and tenths of a second and avoid triggering
+      // unnecessary renders
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 10);
       }, 10);
