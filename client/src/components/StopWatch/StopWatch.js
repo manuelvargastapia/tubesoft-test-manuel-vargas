@@ -1,7 +1,7 @@
 import Buttons from '../Buttons/Buttons';
 import Timer from '../Timer/Timer';
 import useStopwatchController from './useStopwatchController';
-import useTime from './useTime';
+import useStopwatchTime from './useStopwatchTime';
 
 function StopWatch() {
   const [
@@ -12,7 +12,7 @@ function StopWatch() {
     handleFinish,
   ] = useStopwatchController();
 
-  const time = useTime(status);
+  const time = useStopwatchTime(status);
 
   return (
     <div data-testid="stopwatch">

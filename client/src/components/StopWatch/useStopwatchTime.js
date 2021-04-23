@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useTime(status) {
+function useStopwatchTime(status) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -32,4 +32,4 @@ function useTime(status) {
   return time;
 }
 
-export default useTime;
+export default useStopwatchTime;
