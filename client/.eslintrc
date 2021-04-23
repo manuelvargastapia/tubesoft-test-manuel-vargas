@@ -1,4 +1,10 @@
 {
   "plugins": ["jest"],
-  "parserOptions": { "ecmaVersion": 6, "sourceType": "module" }
+  "parserOptions": {
+    "ecmaVersion": 2018, // 2018 edition allows using spread operator in objects
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
 }
