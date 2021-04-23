@@ -8,7 +8,6 @@ function StopWatch() {
     status,
     handleStart,
     handlePause,
-    handleResume,
     handleFinish,
   ] = useStopwatchController();
 
@@ -21,7 +20,7 @@ function StopWatch() {
         status={status}
         onStart={handleStart}
         onPause={handlePause}
-        onResume={handleResume}
+        onResume={handleStart}
         onFinish={handleFinish}
       />
     </div>

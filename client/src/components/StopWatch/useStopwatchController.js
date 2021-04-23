@@ -13,14 +13,11 @@ function useStopwatchController() {
   const handlePause = () => {
     setStatus({ isRunning: false, isPaused: true, isStopped: false });
   };
-  const handleResume = () => {
-    setStatus({ isRunning: true, isPaused: false, isStopped: false });
-  };
   const handleFinish = () => {
     setStatus({ isRunning: false, isPaused: false, isStopped: true });
   };
 
-  return [status, handleStart, handlePause, handleResume, handleFinish];
+  return [status, handleStart, handlePause, handleFinish];
 }
 
 export default useStopwatchController;
