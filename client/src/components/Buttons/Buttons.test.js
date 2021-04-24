@@ -6,9 +6,30 @@ describe('Buttons', () => {
     configure({ throwSuggestions: true });
   });
 
-  const runningStatus = { isRunning: true, isPaused: false, isStopped: false };
-  const pausedStatus = { isRunning: false, isPaused: true, isStopped: false };
-  const stoppedStatus = { isRunning: false, isPaused: false, isStopped: true };
+  const stoppedStatus = {
+    isStopped: true,
+    isRunning: false,
+    isPaused: false,
+    isFinished: false,
+  };
+  const runningStatus = {
+    isStopped: false,
+    isRunning: true,
+    isPaused: false,
+    isFinished: false,
+  };
+  const pausedStatus = {
+    isStopped: false,
+    isRunning: false,
+    isPaused: true,
+    isFinished: false,
+  };
+  const finishedStatus = {
+    isStopped: false,
+    isRunning: false,
+    isPaused: false,
+    isFinished: true,
+  };
   const mockedHandleStart = jest.fn();
   const mockedHandlePause = jest.fn();
   const mockedHandleResume = jest.fn();
@@ -27,6 +48,19 @@ describe('Buttons', () => {
   };
 
   describe('Rendering', () => {
+    it('renders corresponding buttons when stopped', () => {
+      renderWrapper(stoppedStatus);
+
+      expect(
+        screen.queryByRole('button', { name: /start/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: /finish/i })
+      ).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /pause/i })).toBeNull();
+      expect(screen.queryByRole('button', { name: /resume/i })).toBeNull();
+    });
+
     it('renders corresponding button when running', () => {
       renderWrapper(runningStatus);
 
@@ -54,7 +88,7 @@ describe('Buttons', () => {
     });
 
     it('renders corresponding buttons when finished', () => {
-      renderWrapper(stoppedStatus);
+      renderWrapper(finishedStatus);
 
       expect(
         screen.queryByRole('button', { name: /start/i })
@@ -69,7 +103,7 @@ describe('Buttons', () => {
 
   describe('Handlers calls', () => {
     it('calls Start handler', () => {
-      renderWrapper(stoppedStatus);
+      renderWrapper(finishedStatus);
 
       fireEvent.click(screen.getByRole('button', { name: /start/i }));
 
@@ -109,7 +143,7 @@ describe('Buttons', () => {
     });
 
     it('does not call Finish handler when stopped', () => {
-      renderWrapper(stoppedStatus);
+      renderWrapper(finishedStatus);
 
       fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 

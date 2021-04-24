@@ -11,9 +11,10 @@ describe('useStopwatchStatus', () => {
     const [status] = useStopwatchStatus();
 
     expect(status).toStrictEqual({
+      isStopped: true,
       isRunning: false,
       isPaused: false,
-      isStopped: true,
+      isFinished: false,
     });
   });
 
@@ -24,9 +25,10 @@ describe('useStopwatchStatus', () => {
 
     expect(mockedSetState).toHaveBeenCalledTimes(1);
     expect(mockedSetState).toHaveBeenCalledWith({
+      isStopped: false,
       isRunning: true,
       isPaused: false,
-      isStopped: false,
+      isFinished: false,
     });
   });
 
@@ -37,9 +39,10 @@ describe('useStopwatchStatus', () => {
 
     expect(mockedSetState).toHaveBeenCalledTimes(1);
     expect(mockedSetState).toHaveBeenCalledWith({
+      isStopped: false,
       isRunning: false,
       isPaused: true,
-      isStopped: false,
+      isFinished: false,
     });
   });
 
@@ -50,9 +53,10 @@ describe('useStopwatchStatus', () => {
 
     expect(mockedSetState).toHaveBeenCalledTimes(1);
     expect(mockedSetState).toHaveBeenCalledWith({
+      isStopped: true,
       isRunning: false,
       isPaused: false,
-      isStopped: true,
+      isFinished: true,
     });
   });
 });

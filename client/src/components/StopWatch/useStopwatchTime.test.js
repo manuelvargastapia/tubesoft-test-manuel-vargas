@@ -15,9 +15,10 @@ describe('useStopwatchTime', () => {
   it('calls setInterval() and update the state when status.isRunning', () => {
     const { result } = renderHook(() =>
       useStopwatchTime({
+        isStopped: false,
         isRunning: true,
         isPaused: false,
-        isStopped: false,
+        isFinished: false,
       })
     );
 
@@ -34,9 +35,10 @@ describe('useStopwatchTime', () => {
     const { result } = renderHook(() =>
       useStopwatchTime(
         {
+          isStopped: false,
           isRunning: false,
           isPaused: true,
-          isStopped: false,
+          isFinished: false,
         },
         30000
       )
@@ -50,19 +52,20 @@ describe('useStopwatchTime', () => {
     expect(result.current).toBe(30000);
   });
 
-  it('calls clearInterval() and resets the state when status.isStopped', () => {
+  it('calls clearInterval() and resets the state when status.isFinished', () => {
     const { result } = renderHook(() =>
       useStopwatchTime(
         {
+          isStopped: false,
           isRunning: false,
           isPaused: false,
-          isStopped: true,
+          isFinished: true,
         },
         30000
       )
     );
 
-    expect(clearInterval).toHaveBeenCalledTimes(3); // isStopped, render due reseting time and clean up
+    expect(clearInterval).toHaveBeenCalledTimes(3); // isFinished, render due reseting time and clean up
     expect(result.current).toBe(0);
   });
 });

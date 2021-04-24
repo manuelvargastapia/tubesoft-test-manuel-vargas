@@ -13,7 +13,7 @@ function Buttons({ status, onStart, onPause, onResume, onFinish }) {
           {buildFinishButton()}
         </div>
       )}
-      {status.isStopped && (
+      {(status.isFinished || status.isStopped) && (
         <div>
           <button onClick={onStart}>Start</button>
           {buildFinishButton(true)}
