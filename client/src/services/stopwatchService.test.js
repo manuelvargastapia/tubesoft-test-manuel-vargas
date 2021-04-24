@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ServerError, UnexpectedError } from './errors';
-import StopwatchService from './stopwatchService';
+import { services } from './stopwatchService';
 
 jest.mock('axios');
 
@@ -9,11 +9,9 @@ describe('StopwatchService', () => {
     it('returns unexpected error when axios.post() request fails', async () => {
       axios.post.mockRejectedValue(new Error('Axios error'));
 
-      const stopwatchService = new StopwatchService();
-      const result = await stopwatchService.saveRecordAsMilliseconds(
-        expect.anything()
-      );
+      const result = await services.saveRecordAsMilliseconds(expect.anything());
 
+      expect(axios.post).toHaveBeenCalledTimes(1);
       expect(result).toHaveProperty('success', false);
       expect(result).toHaveProperty('error');
       expect(result.error).toBeInstanceOf(UnexpectedError);
@@ -32,11 +30,9 @@ describe('StopwatchService', () => {
         },
       });
 
-      const stopwatchService = new StopwatchService();
-      const result = await stopwatchService.saveRecordAsMilliseconds(
-        expect.anything()
-      );
+      const result = await services.saveRecordAsMilliseconds(expect.anything());
 
+      expect(axios.post).toHaveBeenCalledTimes(1);
       expect(result).toHaveProperty('success', false);
       expect(result).toHaveProperty('error');
       expect(result.error).toBeInstanceOf(UnexpectedError);
@@ -52,11 +48,9 @@ describe('StopwatchService', () => {
         data: { error: 'Internal server error', message: expect.anything() },
       });
 
-      const stopwatchService = new StopwatchService();
-      const result = await stopwatchService.saveRecordAsMilliseconds(
-        expect.anything()
-      );
+      const result = await services.saveRecordAsMilliseconds(expect.anything());
 
+      expect(axios.post).toHaveBeenCalledTimes(1);
       expect(result).toHaveProperty('success', false);
       expect(result).toHaveProperty('error');
       expect(result.error).toBeInstanceOf(ServerError);
@@ -72,11 +66,9 @@ describe('StopwatchService', () => {
         data: expect.anything(),
       });
 
-      const stopwatchService = new StopwatchService();
-      const result = await stopwatchService.saveRecordAsMilliseconds(
-        expect.anything()
-      );
+      const result = await services.saveRecordAsMilliseconds(expect.anything());
 
+      expect(axios.post).toHaveBeenCalledTimes(1);
       expect(result).toHaveProperty('success', false);
       expect(result).toHaveProperty('error');
       expect(result.error).toBeInstanceOf(UnexpectedError);
@@ -97,9 +89,9 @@ describe('StopwatchService', () => {
         },
       });
 
-      const stopwatchService = new StopwatchService();
-      const result = await stopwatchService.saveRecordAsMilliseconds(30000);
+      const result = await services.saveRecordAsMilliseconds(30000);
 
+      expect(axios.post).toHaveBeenCalledTimes(1);
       expect(result).toHaveProperty('success', true);
       expect(result).not.toHaveProperty('error');
       expect(result).toHaveProperty('newRecord', 30000);
