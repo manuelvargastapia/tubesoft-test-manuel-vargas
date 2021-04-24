@@ -1,13 +1,11 @@
-export class UnexpectedError {
+export class UnexpectedError extends Error {
   constructor(message) {
-    this.title = 'Unexpected error';
-    this.message = message;
+    super(message);
   }
 }
 
-export class ServerError {
+export class ServerError extends Error {
   constructor(message) {
-    this.title = 'Server error';
-    this.message = message;
+    super(message);
   }
 }
