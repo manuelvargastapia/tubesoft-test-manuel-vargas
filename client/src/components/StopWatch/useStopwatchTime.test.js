@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks/dom';
 import useStopwatchTime from './useStopwatchTime';
+import { services } from '../../services/stopwatchService';
 
 // This test uses react-hooks-testing-library to be able to test
 // an isolated hook that calls useEffect(), thus, it requires
@@ -7,6 +8,11 @@ import useStopwatchTime from './useStopwatchTime';
 // react-hooks-testing-library solves this problem easily.
 
 describe('useStopwatchTime', () => {
+  const spiedSaveRecordAsMilliseconds = jest.spyOn(
+    services,
+    'saveRecordAsMilliseconds'
+  );
+
   beforeEach(() => {
     // Mock and reset setInterval() between tests
     jest.useFakeTimers();
@@ -52,7 +58,12 @@ describe('useStopwatchTime', () => {
     expect(result.current).toBe(30000);
   });
 
-  it('calls clearInterval() and resets the state when status.isFinished', () => {
+  it('calls clearInterval() save record and resets the state when status.isFinished and save success', () => {
+    spiedSaveRecordAsMilliseconds.mockResolvedValue({
+      success: true,
+      newRecord: expect.anything(),
+    });
+
     const { result } = renderHook(() =>
       useStopwatchTime(
         {
@@ -65,7 +76,31 @@ describe('useStopwatchTime', () => {
       )
     );
 
-    expect(clearInterval).toHaveBeenCalledTimes(3); // isFinished, render due reseting time and clean up
+    expect(clearInterval).toHaveBeenCalledTimes(3);
+    expect(spiedSaveRecordAsMilliseconds).toHaveBeenCalledWith(30000);
+    expect(result.current).toBe(0);
+  });
+
+  it('calls clearInterval() save record and resets the state when status.isFinished and save fails', () => {
+    spiedSaveRecordAsMilliseconds.mockRejectedValue({
+      success: false,
+      error: new Error('Unexpected error'),
+    });
+
+    const { result } = renderHook(() =>
+      useStopwatchTime(
+        {
+          isStopped: false,
+          isRunning: false,
+          isPaused: false,
+          isFinished: true,
+        },
+        30000
+      )
+    );
+
+    expect(clearInterval).toHaveBeenCalledTimes(3);
+    expect(spiedSaveRecordAsMilliseconds).toHaveBeenCalledWith(30000);
     expect(result.current).toBe(0);
   });
 });
