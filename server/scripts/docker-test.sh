@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Tear down containers preventively
+docker-compose -f ../docker-compose.yml down
+
 # Use docker-compose file to run only the postgres container.
 # Also, use a specific env file with connection values for testing
 docker-compose -f ../docker-compose.yml --env-file ../.env.test up -d postgres
