@@ -1,15 +1,10 @@
 import Buttons from '../Buttons/Buttons';
 import Timer from '../Timer/Timer';
-import useStopwatchController from './useStopwatchController';
+import useStopwatchStatus from './useStopwatchStatus';
 import useStopwatchTime from './useStopwatchTime';
 
 function StopWatch() {
-  const [
-    status,
-    handleStart,
-    handlePause,
-    handleFinish,
-  ] = useStopwatchController();
+  const [status, handleStart, handlePause, handleFinish] = useStopwatchStatus();
 
   const time = useStopwatchTime(status);
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useStopwatchController() {
+function useStopwatchStatus() {
   const [status, setStatus] = useState({
     isRunning: false,
     isPaused: false,
@@ -20,4 +20,4 @@ function useStopwatchController() {
   return [status, handleStart, handlePause, handleFinish];
 }
 
-export default useStopwatchController;
+export default useStopwatchStatus;

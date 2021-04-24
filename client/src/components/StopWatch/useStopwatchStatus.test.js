@@ -1,4 +1,4 @@
-import useStopwatchController from './useStopwatchController';
+import useStopwatchStatus from './useStopwatchStatus';
 
 const mockedSetState = jest.fn();
 
@@ -6,9 +6,9 @@ jest.mock('react', () => ({
   useState: (initial) => [initial, mockedSetState],
 }));
 
-describe('useStopwatchController', () => {
+describe('useStopwatchStatus', () => {
   it('returns initial status', () => {
-    const [status] = useStopwatchController();
+    const [status] = useStopwatchStatus();
 
     expect(status).toStrictEqual({
       isRunning: false,
@@ -18,7 +18,7 @@ describe('useStopwatchController', () => {
   });
 
   it('handleStart() changes the status', () => {
-    const [_, handleStart] = useStopwatchController();
+    const [_, handleStart] = useStopwatchStatus();
 
     handleStart();
 
@@ -31,7 +31,7 @@ describe('useStopwatchController', () => {
   });
 
   it('handlePause() changes the status', () => {
-    const [_, __, handlePause] = useStopwatchController();
+    const [_, __, handlePause] = useStopwatchStatus();
 
     handlePause();
 
@@ -44,7 +44,7 @@ describe('useStopwatchController', () => {
   });
 
   it('handleFinish() changes the status', () => {
-    const [_, __, ___, handleFinish] = useStopwatchController();
+    const [_, __, ___, handleFinish] = useStopwatchStatus();
 
     handleFinish();
 
