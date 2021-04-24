@@ -2,10 +2,12 @@
 
 exports.createRoutes = (app) => {
   const express = require('express');
+  const cors = require('cors');
   const { healthCheck, registerTime } = require('../controllers');
   const { registerTimeBodyValidator, errorHandler } = require('../middlewares');
 
   app.use(express.json());
+  app.use(cors());
 
   // Endpoint to verify the application is up and ready.
   //

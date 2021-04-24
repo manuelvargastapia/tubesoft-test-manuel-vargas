@@ -16,6 +16,7 @@
     "coverageDirectory": "tests/coverage"
   },
   "dependencies": {
+    "cors": "2.8.5",
     "express": "4.17.1",
     "express-joi-validation": "5.0.0",
     "pg": "8.6.0",
