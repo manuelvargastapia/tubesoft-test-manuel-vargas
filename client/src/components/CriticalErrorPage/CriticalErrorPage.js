@@ -1,6 +1,6 @@
 function CriticalErrorPage({ details }) {
   return (
-    <div>
+    <div role="critical-error-page">
       <p>An unexpected error has ocurred!</p>
       <p>Details for nerds:</p>
       <p>{details}</p>
