@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import useSaveRecord from './useSaveRecord';
-import { services } from './services/stopwatchService';
-import { ServerError, UnexpectedError } from './services/errors';
+import { services } from '../../services/stopwatchService';
+import { ServerError, UnexpectedError } from '../../services/errors';
 
 describe('useSaveRecord', () => {
   const spiedSaveRecordAsMilliseconds = jest.spyOn(

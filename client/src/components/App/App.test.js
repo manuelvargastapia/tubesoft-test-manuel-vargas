@@ -6,8 +6,8 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from '@testing-library/react';
-import { services } from './services/stopwatchService';
-import { ServerError, UnexpectedError } from './services/errors';
+import { services } from '../../services/stopwatchService';
+import { ServerError, UnexpectedError } from '../../services/errors';
 import App from './App';
 
 describe('App', () => {

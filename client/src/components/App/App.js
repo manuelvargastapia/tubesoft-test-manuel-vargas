@@ -1,7 +1,7 @@
-import StopWatch from './components/StopWatch/StopWatch';
-import LastRecord from './components/LastRecord/LastRecord';
-import ErrorMessage from './components/ErrorMessage/ErrorMessage';
-import CriticalErrorPage from './components/CriticalErrorPage/CriticalErrorPage';
+import StopWatch from '../StopWatch/StopWatch';
+import LastRecord from '../LastRecord/LastRecord';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import CriticalErrorPage from '../CriticalErrorPage/CriticalErrorPage';
 import useSaveRecord from './useSaveRecord';
 import './App.css';
 

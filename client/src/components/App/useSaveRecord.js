@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { services } from './services/stopwatchService';
-import { ServerError, UnexpectedError } from './services/errors';
+import { services } from '../../services/stopwatchService';
+import { ServerError, UnexpectedError } from '../../services/errors';
 
 function useSaveRecord() {
   const [lastRecord, setLastRecord] = useState(null);
