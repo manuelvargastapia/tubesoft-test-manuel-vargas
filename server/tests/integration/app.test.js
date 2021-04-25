@@ -186,11 +186,6 @@ describe('POST /register_time', () => {
             })
             .expect(201, expectedResponse)
             .then(async (_) => {
-              // TODO: couldn't get calls from spied create()
-              // expect(spiedCreate).toHaveBeenCalledTimes(1);
-              // expect(spiedCreate.mock.calls[0][0]).toStrictEqual(
-              //   expectedResponse.milliseconds
-              // );
               const storedTime = await Times.findOne({ where: newTime });
               expect(storedTime.milliseconds).toBe(
                 expectedResponse.milliseconds
@@ -246,11 +241,6 @@ describe('POST /register_time', () => {
             })
             .expect(201, expectedResponse)
             .then(async (_) => {
-              // TODO: couldn't get calls from spied create()
-              // expect(spiedCreate).toHaveBeenCalledTimes(1);
-              // expect(spiedCreate.mock.calls[0][0].seconds).toStrictEqual(
-              //   expectedResponse.seconds
-              // );
               const storedTime = await Times.findOne({ where: newTime });
               expect(storedTime.seconds).toBe(expectedResponse.seconds);
             });
