@@ -7,7 +7,7 @@
   "scripts": {
     "start": "PORT=5000 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --verbose --coverage"
+    "test": "react-scripts test --verbose --coverage --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
