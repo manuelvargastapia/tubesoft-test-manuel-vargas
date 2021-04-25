@@ -16,14 +16,14 @@ describe('Stopwatch', () => {
   });
 
   it('renders initial setup', () => {
-    render(<StopWatch />);
+    render(<StopWatch onStopwatchFinished={jest.fn()} />);
 
     expect(screen.getByTestId('timer')).toHaveTextContent('00:00:00');
     expect(screen.getByTestId('buttons')).toBeInTheDocument();
   });
 
   it('starts the timer when clicking Start button', () => {
-    render(<StopWatch />);
+    render(<StopWatch onStopwatchFinished={jest.fn()} />);
 
     expect(setInterval).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: /start/i }));
@@ -39,7 +39,7 @@ describe('Stopwatch', () => {
   });
 
   it('resets the timer when clicking Finish button', () => {
-    render(<StopWatch />);
+    render(<StopWatch onStopwatchFinished={jest.fn()} />);
 
     expect(setInterval).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: /start/i }));
@@ -61,7 +61,7 @@ describe('Stopwatch', () => {
   });
 
   it('stops the timer at the current value when clicking Pause button', () => {
-    render(<StopWatch />);
+    render(<StopWatch onStopwatchFinished={jest.fn()} />);
 
     expect(setInterval).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: /start/i }));
@@ -83,7 +83,7 @@ describe('Stopwatch', () => {
   });
 
   it('starts the timer when clicking Resume button', () => {
-    render(<StopWatch />);
+    render(<StopWatch onStopwatchFinished={jest.fn()} />);
 
     expect(setInterval).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: /start/i }));

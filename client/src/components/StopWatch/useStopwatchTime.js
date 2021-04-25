@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useStopwatchTime(status, initialValue = 0) {
+function useStopwatchTime(status, onStopwatchFinished, initialValue = 0) {
   const [time, setTime] = useState(initialValue);
 
   useEffect(() => {
@@ -19,8 +19,9 @@ function useStopwatchTime(status, initialValue = 0) {
       clearInterval(interval);
     }
 
-    if (status.isStopped) {
+    if (status.isFinished) {
       clearInterval(interval);
+      onStopwatchFinished(time);
       setTime(0);
     }
 

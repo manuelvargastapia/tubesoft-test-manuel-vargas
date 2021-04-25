@@ -3,10 +3,10 @@ import Timer from '../Timer/Timer';
 import useStopwatchStatus from './useStopwatchStatus';
 import useStopwatchTime from './useStopwatchTime';
 
-function StopWatch() {
+function StopWatch({ onStopwatchFinished }) {
   const [status, handleStart, handlePause, handleFinish] = useStopwatchStatus();
 
-  const time = useStopwatchTime(status);
+  const time = useStopwatchTime(status, onStopwatchFinished);
 
   return (
     <div data-testid="stopwatch">
