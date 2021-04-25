@@ -24,11 +24,11 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('heading', { name: /don't waste time!/i })
+      screen.getByRole('heading', { name: /welcome to timekeeper!/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: /start, pause and then finish your stopwatch to record your time\./i,
+        name: /Start, pause and then finish the stopwatch to record your time/i,
       })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
@@ -55,10 +55,10 @@ describe('App', () => {
     // in the component. Otherwise, we get the following error:
     // "Warning: An update to App inside a test was not wrapped in act".
     await waitForElementToBeRemoved(
-      screen.getByRole('heading', { name: /don't waste time!/i })
+      screen.getByRole('heading', { name: /welcome to timekeeper!/i })
     );
 
-    expect(screen.queryByText("Don't waste time!")).toBeNull();
+    expect(screen.queryByText('Welcome to Timekeeper!')).toBeNull();
     expect(
       screen.queryByText(
         'Start, pause and then finish your stopwatch to record your time.'
@@ -73,7 +73,7 @@ describe('App', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(testErrorMessage)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /please, reload this page\./i })
+      screen.getByRole('heading', { name: /please, reload this page/i })
     ).toBeInTheDocument();
   });
 
@@ -95,11 +95,11 @@ describe('App', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: /don't waste time!/i })
+      screen.getByRole('heading', { name: /welcome to timekeeper!/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: /start, pause and then finish your stopwatch to record your time\./i,
+        name: /Start, pause and then finish the stopwatch to record your time/i,
       })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
@@ -130,11 +130,11 @@ describe('App', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: /don't waste time!/i })
+      screen.getByRole('heading', { name: /welcome to timekeeper!/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: /start, pause and then finish your stopwatch to record your time\./i,
+        name: /Start, pause and then finish the stopwatch to record your time/i,
       })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();

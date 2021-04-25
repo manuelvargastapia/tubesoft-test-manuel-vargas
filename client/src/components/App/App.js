@@ -19,9 +19,9 @@ function App() {
         <CriticalErrorPage details={criticalError} />
       ) : (
         <div>
-          <h2>Don't waste time!</h2>
+          <h2>Welcome to Timekeeper!</h2>
           <h3>
-            Start, pause and then finish your stopwatch to record your time.
+            Start, pause and then finish the stopwatch to record your time
           </h3>
           <StopWatch onStopwatchFinished={onStopwatchFinished} />
           {lastRecord && <LastRecord time={lastRecord} />}

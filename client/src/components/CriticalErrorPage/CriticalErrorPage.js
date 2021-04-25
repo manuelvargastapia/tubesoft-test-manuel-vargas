@@ -6,7 +6,7 @@ function CriticalErrorPage({ details }) {
       <h2>An unexpected error has ocurred!</h2>
       <h3>Details for nerds:</h3>
       <p>{details}</p>
-      <h4>Please, reload this page.</h4>
+      <h4>Please, reload this page</h4>
     </div>
   );
 }

@@ -19,7 +19,7 @@ describe('CriticalErrorPage', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(testDetails)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /please, reload this page./i })
+      screen.getByRole('heading', { name: /please, reload this page/i })
     ).toBeInTheDocument();
   });
 });
