@@ -1,6 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks/dom';
 import useStopwatchTime from './useStopwatchTime';
-import { services } from '../../services/stopwatchService';
 
 // This test uses react-hooks-testing-library to be able to test
 // an isolated hook that calls useEffect(), thus, it requires
@@ -8,24 +7,24 @@ import { services } from '../../services/stopwatchService';
 // react-hooks-testing-library solves this problem easily.
 
 describe('useStopwatchTime', () => {
-  const spiedSaveRecordAsMilliseconds = jest.spyOn(
-    services,
-    'saveRecordAsMilliseconds'
-  );
-
   beforeEach(() => {
     // Mock and reset setInterval() between tests
     jest.useFakeTimers();
   });
 
+  const mockedOnStopwatchFinished = jest.fn();
+
   it('calls setInterval() and update the state when status.isRunning', () => {
     const { result } = renderHook(() =>
-      useStopwatchTime({
-        isStopped: false,
-        isRunning: true,
-        isPaused: false,
-        isFinished: false,
-      })
+      useStopwatchTime(
+        {
+          isStopped: false,
+          isRunning: true,
+          isPaused: false,
+          isFinished: false,
+        },
+        mockedOnStopwatchFinished
+      )
     );
 
     act(() => {
@@ -46,6 +45,7 @@ describe('useStopwatchTime', () => {
           isPaused: true,
           isFinished: false,
         },
+        mockedOnStopwatchFinished,
         30000
       )
     );
@@ -58,12 +58,7 @@ describe('useStopwatchTime', () => {
     expect(result.current).toBe(30000);
   });
 
-  it('calls clearInterval() save record and resets the state when status.isFinished and save success', () => {
-    spiedSaveRecordAsMilliseconds.mockResolvedValue({
-      success: true,
-      newRecord: expect.anything(),
-    });
-
+  it('calls clearInterval(), saves record and resets the state when status.isFinished and save success', () => {
     const { result } = renderHook(() =>
       useStopwatchTime(
         {
@@ -72,35 +67,13 @@ describe('useStopwatchTime', () => {
           isPaused: false,
           isFinished: true,
         },
+        mockedOnStopwatchFinished,
         30000
       )
     );
 
     expect(clearInterval).toHaveBeenCalledTimes(3);
-    expect(spiedSaveRecordAsMilliseconds).toHaveBeenCalledWith(30000);
-    expect(result.current).toBe(0);
-  });
-
-  it('calls clearInterval() save record and resets the state when status.isFinished and save fails', () => {
-    spiedSaveRecordAsMilliseconds.mockRejectedValue({
-      success: false,
-      error: new Error('Unexpected error'),
-    });
-
-    const { result } = renderHook(() =>
-      useStopwatchTime(
-        {
-          isStopped: false,
-          isRunning: false,
-          isPaused: false,
-          isFinished: true,
-        },
-        30000
-      )
-    );
-
-    expect(clearInterval).toHaveBeenCalledTimes(3);
-    expect(spiedSaveRecordAsMilliseconds).toHaveBeenCalledWith(30000);
+    expect(mockedOnStopwatchFinished).toHaveBeenCalledWith(30000);
     expect(result.current).toBe(0);
   });
 });
