@@ -6,7 +6,7 @@ jest.mock('axios');
 
 describe('StopwatchService', () => {
   describe('saveRecordAsMilliseconds', () => {
-    it('returns unexpected error when axios.post() request fails', async () => {
+    it('returns unexpected error when axios.post() request fails without response', async () => {
       axios.post.mockRejectedValue(new Error('Axios error'));
 
       const result = await services.saveRecordAsMilliseconds(expect.anything());
@@ -22,11 +22,13 @@ describe('StopwatchService', () => {
     });
 
     it('returns unexpected error when axios.post() fails with 400', async () => {
-      axios.post.mockResolvedValue({
-        status: 400,
-        data: {
-          error: 'Invalid data',
-          message: 'ValidationError',
+      axios.post.mockRejectedValue({
+        response: {
+          status: 400,
+          data: {
+            error: 'Invalid data',
+            message: 'ValidationError',
+          },
         },
       });
 
@@ -43,9 +45,11 @@ describe('StopwatchService', () => {
     });
 
     it('returns server error when axios.post() fails with 500', async () => {
-      axios.post.mockResolvedValue({
-        status: 500,
-        data: { error: 'Internal server error', message: expect.anything() },
+      axios.post.mockRejectedValue({
+        response: {
+          status: 500,
+          data: { error: 'Internal server error', message: expect.anything() },
+        },
       });
 
       const result = await services.saveRecordAsMilliseconds(expect.anything());
@@ -61,9 +65,11 @@ describe('StopwatchService', () => {
     });
 
     it('returns unexpected error when axios.post() fails with unknown code', async () => {
-      axios.post.mockResolvedValue({
-        status: expect.anything(),
-        data: expect.anything(),
+      axios.post.mockRejectedValue({
+        response: {
+          status: expect.anything(),
+          data: expect.anything(),
+        },
       });
 
       const result = await services.saveRecordAsMilliseconds(expect.anything());

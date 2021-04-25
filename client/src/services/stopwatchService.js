@@ -9,34 +9,35 @@ async function saveRecordAsMilliseconds(record) {
       { baseURL: 'http://localhost:3000' }
     );
 
-    switch (response.status) {
-      case 400:
-        return {
-          success: false,
-          error: new UnexpectedError(
-            `${response.data.error}: ${response.data.message}`
-          ),
-        };
-      case 500:
-        return {
-          success: false,
-          error: new ServerError('Server error. Please, try again later'),
-        };
-      case 201:
-        return {
-          success: true,
-          newRecord: response.data.milliseconds,
-        };
-
-      default:
-        return {
-          success: false,
-          error: new UnexpectedError(
-            'An unexpected error has occurred while creating a new record'
-          ),
-        };
+    return {
+      success: true,
+      newRecord: response.data.milliseconds,
+    };
+  } catch ({ response }) {
+    if (response) {
+      switch (response.status) {
+        case 400:
+          return {
+            success: false,
+            error: new UnexpectedError(
+              `${response.data.error}: ${response.data.message}`
+            ),
+          };
+        case 500:
+          return {
+            success: false,
+            error: new ServerError('Server error. Please, try again later'),
+          };
+        default:
+          return {
+            success: false,
+            error: new UnexpectedError(
+              'An unexpected error has occurred while creating a new record'
+            ),
+          };
+      }
     }
-  } catch (error) {
+
     return {
       success: false,
       error: new UnexpectedError(
