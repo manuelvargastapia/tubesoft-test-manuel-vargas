@@ -2,7 +2,7 @@
 
 // Unrecoverable errors.
 // When such an error occurs, the app will stop working and
-// will show an error page. The page will need to be reloaded
+// will show an error screen. The page will need to be reloaded
 // before proceeding. A possible reason could be an error
 // in the code itself.
 export class UnexpectedError extends Error {}
