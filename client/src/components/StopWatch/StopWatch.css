@@ -1,0 +1,4 @@
+.Stopwatch {
+  display: flex;
+  flex-direction: column;
+}

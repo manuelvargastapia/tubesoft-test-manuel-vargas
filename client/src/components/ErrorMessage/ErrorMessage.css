@@ -1,0 +1,10 @@
+.ErrorMessage {
+  padding: 1rem;
+  background-color: rgb(31, 31, 31);
+  color: white;
+  margin: 2rem auto 0 auto;
+  min-width: fit-content;
+  max-width: 95%;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}

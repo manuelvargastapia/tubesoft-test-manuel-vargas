@@ -1,9 +1,10 @@
 import Timer from '../Timer/Timer';
+import './LastRecord.css';
 
 function LastRecord({ time }) {
   return (
-    <div>
-      <p>Cool! This is your last saved time:</p>
+    <div className="LastRecord">
+      <h2>Cool! This is your last saved time:</h2>
       <Timer time={time} />
     </div>
   );

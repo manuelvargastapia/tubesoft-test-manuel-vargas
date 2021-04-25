@@ -15,21 +15,19 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        {criticalError ? (
-          <CriticalErrorPage details={criticalError} />
-        ) : (
-          <div>
-            <p>Don't waste time!</p>
-            <p>
-              Start, pause and then finish your stopwatch to record your time.
-            </p>
-            <StopWatch onStopwatchFinished={onStopwatchFinished} />
-            {lastRecord && <LastRecord time={lastRecord} />}
-            {temporalError && <ErrorMessage message={temporalError} />}
-          </div>
-        )}
-      </header>
+      {criticalError ? (
+        <CriticalErrorPage details={criticalError} />
+      ) : (
+        <div>
+          <h2>Don't waste time!</h2>
+          <h3>
+            Start, pause and then finish your stopwatch to record your time.
+          </h3>
+          <StopWatch onStopwatchFinished={onStopwatchFinished} />
+          {lastRecord && <LastRecord time={lastRecord} />}
+          {temporalError && <ErrorMessage message={temporalError} />}
+        </div>
+      )}
     </div>
   );
 }

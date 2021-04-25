@@ -1,3 +1,5 @@
+import './Timer.css';
+
 // Algorithm explanation:
 //
 // We want to format the milliseconds to be shown as '00:00:00' (from
@@ -28,7 +30,7 @@ function Timer({ time }) {
   };
 
   return (
-    <div data-testid="timer">
+    <div data-testid="timer" className="Timer">
       <span>{formatMinutes(time)}:</span>
       <span>{formatSeconds(time)}:</span>
       <span>{formatMilliseconds(time)}</span>

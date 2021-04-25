@@ -1,3 +1,5 @@
+import './Buttons.css';
+
 function Buttons({ status, onStart, onPause, onResume, onFinish }) {
   const buildFinishButton = (disabled = false) => (
     <button disabled={disabled} onClick={onFinish}>
@@ -6,7 +8,7 @@ function Buttons({ status, onStart, onPause, onResume, onFinish }) {
   );
 
   return (
-    <div data-testid="buttons">
+    <div data-testid="buttons" className="Buttons">
       {status.isRunning && (
         <div>
           <button onClick={onPause}>Pause</button>

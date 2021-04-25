@@ -1,5 +1,11 @@
+import './ErrorMessage.css';
+
 function ErrorMessage({ message }) {
-  return <p data-testid="error-message">{message}</p>;
+  return (
+    <div data-testid="error-message" className="ErrorMessage">
+      <p>{message}</p>
+    </div>
+  );
 }
 
 export default ErrorMessage;
