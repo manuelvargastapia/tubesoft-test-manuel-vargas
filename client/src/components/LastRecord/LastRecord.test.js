@@ -10,7 +10,9 @@ describe('LastRecord', () => {
     render(<LastRecord time={30000} />);
 
     expect(
-      screen.getByText('Cool! This is your last saved time:')
+      screen.getByRole('heading', {
+        name: /cool! this is your last saved time:/i,
+      })
     ).toBeInTheDocument();
     expect(screen.getByTestId('timer')).toHaveTextContent('00:30:00');
   });

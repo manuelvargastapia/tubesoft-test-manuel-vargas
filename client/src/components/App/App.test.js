@@ -23,11 +23,13 @@ describe('App', () => {
   it('renders initial setup', () => {
     render(<App />);
 
-    expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        'Start, pause and then finish your stopwatch to record your time.'
-      )
+      screen.getByRole('heading', { name: /don't waste time!/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /start, pause and then finish your stopwatch to record your time\./i,
+      })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
     expect(
@@ -52,7 +54,9 @@ describe('App', () => {
     // After the click event, we need to wait for the proper update
     // in the component. Otherwise, we get the following error:
     // "Warning: An update to App inside a test was not wrapped in act".
-    await waitForElementToBeRemoved(screen.getByText("Don't waste time!"));
+    await waitForElementToBeRemoved(
+      screen.getByRole('heading', { name: /don't waste time!/i })
+    );
 
     expect(screen.queryByText("Don't waste time!")).toBeNull();
     expect(
@@ -62,11 +66,15 @@ describe('App', () => {
     ).toBeNull();
     expect(screen.queryByTestId('stopwatch')).toBeNull();
     expect(
-      screen.getByText('An unexpected error has ocurred!')
+      screen.getByRole('heading', { name: /an unexpected error has ocurred!/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('Details for nerds:')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /details for nerds:/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(testErrorMessage)).toBeInTheDocument();
-    expect(screen.getByText('Please, reload this page.')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /please, reload this page\./i })
+    ).toBeInTheDocument();
   });
 
   it('renders ErrorMessage when a ServerError ocurrs', async () => {
@@ -86,11 +94,13 @@ describe('App', () => {
       expect(screen.getByText(testErrorMessage)).toBeInTheDocument()
     );
 
-    expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        'Start, pause and then finish your stopwatch to record your time.'
-      )
+      screen.getByRole('heading', { name: /don't waste time!/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /start, pause and then finish your stopwatch to record your time\./i,
+      })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
     expect(
@@ -113,19 +123,25 @@ describe('App', () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText('Cool! This is your last saved time:')
+        screen.getByRole('heading', {
+          name: /cool! this is your last saved time:/i,
+        })
       ).toBeInTheDocument()
     );
 
-    expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        'Start, pause and then finish your stopwatch to record your time.'
-      )
+      screen.getByRole('heading', { name: /don't waste time!/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /start, pause and then finish your stopwatch to record your time\./i,
+      })
     ).toBeInTheDocument();
     expect(screen.getByTestId('stopwatch')).toBeInTheDocument();
     expect(
-      screen.getByText('Cool! This is your last saved time:')
+      screen.getByRole('heading', {
+        name: /cool! this is your last saved time:/i,
+      })
     ).toBeInTheDocument();
     expect(screen.getAllByTestId('timer')[1]).toHaveTextContent('00:50:00');
     expect(screen.queryByTestId('error-message')).toBeNull();

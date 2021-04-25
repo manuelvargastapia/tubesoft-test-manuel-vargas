@@ -12,10 +12,14 @@ describe('CriticalErrorPage', () => {
     render(<CriticalErrorPage details={testDetails} />);
 
     expect(
-      screen.getByText('An unexpected error has ocurred!')
+      screen.getByRole('heading', { name: /an unexpected error has ocurred!/i })
     ).toBeInTheDocument();
-    expect(screen.getByText('Details for nerds:')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /details for nerds:/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(testDetails)).toBeInTheDocument();
-    expect(screen.getByText('Please, reload this page.')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /please, reload this page./i })
+    ).toBeInTheDocument();
   });
 });
