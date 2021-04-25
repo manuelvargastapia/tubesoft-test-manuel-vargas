@@ -28,7 +28,14 @@ function useStopwatchTime(status, onStopwatchFinished, initialValue = 0) {
     // Clean up the interval after each render to prevent setTime()
     // being called even after pausing or reseting the timer
     return () => clearInterval(interval);
-  }, [status]);
+
+    // Ignore linting rules to avoid warning about including "time"
+    // as dependency. Indeed, "time" should be added as a dependency,
+    // but this useEffect is intended to run every time "status" changes.
+    // More refactoring could be necessary to avoid properly this issue.
+
+    // eslint-disable-next-line
+  }, [status, onStopwatchFinished]);
 
   return time;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { services } from '../../services/stopwatchService';
 import { ServerError, UnexpectedError } from '../../services/errors';
 
@@ -25,12 +25,13 @@ function useSaveRecord() {
     setCriticalError(result.error.message);
   };
 
-  const onStopwatchFinished = (time) => {
+  // Memoize callback to be used inside a useEffect.
+  const onStopwatchFinished = useCallback((time) => {
     services
       .saveRecordAsMilliseconds(time)
       .then(onRecordSavedSuccess)
       .catch(onRecordSavedFailed);
-  };
+  }, []);
 
   return [lastRecord, temporalError, criticalError, onStopwatchFinished];
 }

@@ -33,7 +33,7 @@ describe('App', () => {
     expect(
       screen.queryByText('Cool! This is your last saved time:')
     ).toBeNull();
-    expect(screen.queryByRole('error-message')).toBeNull();
+    expect(screen.queryByTestId('error-message')).toBeNull();
   });
 
   it('renders CriticalErrorPage when an unexpected error ocurrs', async () => {
@@ -61,7 +61,12 @@ describe('App', () => {
       )
     ).toBeNull();
     expect(screen.queryByTestId('stopwatch')).toBeNull();
-    expect(screen.getByRole('critical-error-page')).toBeInTheDocument();
+    expect(
+      screen.getByText('An unexpected error has ocurred!')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Details for nerds:')).toBeInTheDocument();
+    expect(screen.getByText(testErrorMessage)).toBeInTheDocument();
+    expect(screen.getByText('Please, reload this page.')).toBeInTheDocument();
   });
 
   it('renders ErrorMessage when a ServerError ocurrs', async () => {
@@ -78,7 +83,7 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
     await waitFor(() =>
-      expect(screen.getByRole('error-message')).toBeInTheDocument()
+      expect(screen.getByText(testErrorMessage)).toBeInTheDocument()
     );
 
     expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
@@ -91,9 +96,6 @@ describe('App', () => {
     expect(
       screen.queryByText('Cool! This is your last saved time:')
     ).toBeNull();
-    expect(screen.getByRole('error-message')).toHaveTextContent(
-      testErrorMessage
-    );
   });
 
   it('renders LastRecord with newly saved time when clicking Finish', async () => {
@@ -110,7 +112,9 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /finish/i }));
 
     await waitFor(() =>
-      expect(screen.queryByTestId('timer')).toBeInTheDocument()
+      expect(
+        screen.getByText('Cool! This is your last saved time:')
+      ).toBeInTheDocument()
     );
 
     expect(screen.getByText("Don't waste time!")).toBeInTheDocument();
@@ -124,6 +128,6 @@ describe('App', () => {
       screen.getByText('Cool! This is your last saved time:')
     ).toBeInTheDocument();
     expect(screen.getAllByTestId('timer')[1]).toHaveTextContent('00:50:00');
-    expect(screen.queryByRole('error-message')).toBeNull();
+    expect(screen.queryByTestId('error-message')).toBeNull();
   });
 });

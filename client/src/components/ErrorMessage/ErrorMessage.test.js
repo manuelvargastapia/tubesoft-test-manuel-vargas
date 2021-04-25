@@ -11,6 +11,6 @@ describe('ErrorMessage', () => {
 
     render(<ErrorMessage message={testMessage} />);
 
-    expect(screen.getByRole('error-message')).toBeInTheDocument();
+    expect(screen.getByText(testMessage)).toBeInTheDocument();
   });
 });
