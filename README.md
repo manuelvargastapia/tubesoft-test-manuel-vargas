@@ -53,9 +53,9 @@ Because this project depends on the [Docker engine](https://docs.docker.com/engi
 
 ### Run
 
-Build the images and run all the containers jointly: `docker-compose up`.
+Build the images and run all the containers jointly: `sudo docker-compose up`.*
 
-Tear down the containers: `docker-compose down`.
+Tear down the containers: `sudo docker-compose down`.
 
 Visit http://localhost:5000 to see the app.
 
@@ -68,6 +68,8 @@ Use the following settings to inspect the database:
 - Password: **password**
 
 During development, tune the setting in `server/src/config/db_config.js` and the different `.env` files. Note that a random port **2345** has been used to avoid potential conflict with running instances.
+
+*Note that `sudo` is not required if [this optional configuration](https://docs.docker.com/engine/install/linux-postinstall/) is implemented.
 
 ### Test
 
@@ -82,11 +84,11 @@ In both cases, a coverage summary will be output in the terminal.
 
 #####  Run the app:
 ```
-docker-compose up
+sudo docker-compose up
 ```
 ##### Tear down containers:
 ```
-docker-compose down
+sudo docker-compose down
 ```
 ##### Run client tests:
 ```

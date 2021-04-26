@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-# Tear down containers preventively
-docker-compose -f ../docker-compose.yml down
+# Tear down containers preventively.
+# Similarly, use 'sudo' as a preventive measure in case the host
+# machine requires it
+sudo docker-compose -f ../docker-compose.yml down
 
 # Use docker-compose file to run only the postgres container.
 # Also, use a specific env file with connection values for testing
