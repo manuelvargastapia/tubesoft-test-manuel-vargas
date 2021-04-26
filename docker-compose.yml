@@ -3,7 +3,7 @@ version: '3.9'
 services:
   postgres:
     image: postgres:13
-    container_name: postgres
+    container_name: timekeeper_postgres
     environment:
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_DB: '${POSTGRES_DB}'
@@ -17,7 +17,7 @@ services:
       retries: 5
 
   server:
-    container_name: server
+    container_name: timekeeper_server
     build: ./server # Build image from Dockefile in /server
     ports:
       - '${SERVER_HOST_PORT}:${SERVER_CONTAINER_PORT}'
@@ -39,7 +39,7 @@ services:
       retries: 3
 
   client:
-    container_name: client
+    container_name: timekeeper_client
     build: ./client # Build image from Dockefile in /server
     ports:
       - '5000:5000'
