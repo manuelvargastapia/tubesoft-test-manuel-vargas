@@ -41,12 +41,14 @@ module.exports = {
   // Docker environment for tests.
   // Use docker-compose.yml to run the tests against the Postgres
   // container.
+  // Note that a random port '2345' has been used to avoid potential
+  // conflict with other running instances.
   'docker-test': {
     username: 'postgres',
     password: 'password',
     database: 'timekeeper_db_test',
     host: 'localhost',
-    port: 5432,
+    port: 2345,
     dialect: 'postgres',
   },
 };
