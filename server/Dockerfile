@@ -3,15 +3,15 @@ FROM node:14.16.1
 
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json into the working directory
-# to ensure installing the exact same dependencies as in host machine
+# Copy package.json into the working directory.
+# package-lock.json is not copied because it may not
+# be present.
 COPY package.json .
-COPY package-lock.json .
 
 # Avoid installing dev-dependencies
 RUN npm install --only=production
 
-# express-joi-validation depends on "joi" and is explictely
+# express-joi-validation depends on "joi" and is explicitely
 # used in code
 RUN npm install joi
 

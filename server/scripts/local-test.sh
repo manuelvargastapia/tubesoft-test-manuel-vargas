@@ -3,6 +3,9 @@
 # Use local-test values to connect to DB according to src/config/db_config.js
 export NODE_ENV=local-test
 
+# Install dependencies locally
+npm install
+
 # Prepare DB
 sequelize-cli db:create
 sequelize-cli db:migrate

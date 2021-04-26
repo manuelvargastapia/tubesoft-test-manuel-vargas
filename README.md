@@ -73,12 +73,14 @@ During development, tune the setting in `server/src/config/db_config.js` and the
 
 ### Test
 
-The test suites run independently. To run the client's tests, navigate to `/client` and run `npm test`. To run the server's tests, two options are provided:
+The test suites run independently. To run the client's tests, navigate to `/client`, run `npm install` and `npm test`. To run the server's tests, two options are provided:
 
 1. Run tests locally with `npm run local-test`. This will require a running database against which to run the integration tests.
 2. (Recommended) Create a database on the fly and run the tests with `npm run docker-test`. A Postgres container will be build using the `docker-compose.yml` file and will be torn down after running the tests.
 
 In both cases, a coverage summary will be output in the terminal.
+
+Finally, note that, as a preventive measure, the script run by `npm run docker-test` uses `sudo` to use Docker Compose commands. Because of this, the terminal could prompt the password.
 
 ### Summary
 
